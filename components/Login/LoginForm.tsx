@@ -13,14 +13,20 @@ import {
     FormMessage
 } from "@/components/ui/form"
 import { Input } from "../ui/input"
-import { useTransition } from "react"
+import { useState, useTransition } from "react"
 import Button from "../Button"
 import Link from "next/link"
 import FormWrapper from "../FormWrapper"
 import Social from "../Social"
+import login from "@/actions/login"
+import FormError from "../FormError"
+import { useRouter } from "next/navigation"
+import { DEFAULT_LOGIN_REDIRECT } from "@/routes"
 
 const LoginForm = () => {
     const [isPending, startTransition] = useTransition()
+    const [error, setError] = useState<string | undefined>()
+    const router = useRouter()
     const form = useForm<z.infer<typeof LoginSchema>>({
         resolver: zodResolver(LoginSchema),
         defaultValues: {
@@ -28,10 +34,26 @@ const LoginForm = () => {
             password: ""
         }
     })
+
+    const onSubmit = (values: z.infer<typeof LoginSchema>) => {
+        setError("")
+        startTransition(() => {
+            login(values)
+                .then(data => {
+                    if (data?.error) {
+                        form.reset()
+                        setError(data.error)
+                    }
+                })
+                .catch(() => {
+                    setError("Something went wrong!!")
+                })
+        })
+    }
     return (
         <FormWrapper label="Sign In">
             <Form {...form}>
-                <form className="flex flex-col gap-4">
+                <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col gap-4">
                     <FormField
                         control={form.control}
                         name="email"
@@ -68,6 +90,7 @@ const LoginForm = () => {
                             </FormItem>
                         )}
                     />
+                    <FormError message={error} />
                     <Button
                         type="submit"
                         disabled={isPending}

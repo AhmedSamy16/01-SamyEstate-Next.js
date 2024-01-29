@@ -14,13 +14,18 @@ import {
     FormLabel
 } from "@/components/ui/form"
 import { Input } from "../ui/input"
-import { useTransition } from "react"
+import { useState, useTransition } from "react"
 import Button from "../Button"
 import Link from "next/link"
 import Social from "../Social"
+import register from "@/actions/register"
+import FormSuccess from "../FormSuccess"
+import FormError from "../FormError"
 
 const SignUpForm = () => {
     const [isPending, startTransition] = useTransition()
+    const [error, setError] = useState<string | undefined>("")
+    const [success, setSuccess] = useState<string | undefined>("")
     const form = useForm<z.infer<typeof SignUpSchema>>({
         resolver: zodResolver(SignUpSchema),
         defaultValues: {
@@ -29,10 +34,22 @@ const SignUpForm = () => {
             username: ""
         }
     })
+
+    const onSubmit = (values: z.infer<typeof SignUpSchema>) => {
+        setError("")
+        setSuccess("")
+        startTransition(() => {
+            register(values)
+                .then((data) => {
+                    setError(data.error)
+                    setSuccess(data.success)
+                })
+        })
+    }
   return (
     <FormWrapper label="Sign Up">
         <Form {...form}>
-            <form className="flex flex-col gap-5">
+            <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col gap-5">
                 <FormField
                     control={form.control}
                     name="username"
@@ -87,6 +104,8 @@ const SignUpForm = () => {
                         </FormItem>
                     )}
                 />
+                <FormSuccess message={success} />
+                <FormError message={error} />
                 <Button 
                     disabled={isPending}
                     label="Sign Up"
