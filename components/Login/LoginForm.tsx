@@ -20,13 +20,16 @@ import FormWrapper from "../FormWrapper"
 import Social from "../Social"
 import login from "@/actions/login"
 import FormError from "../FormError"
-import { useRouter } from "next/navigation"
+import { useRouter, useSearchParams } from "next/navigation"
+import { callbackUrlConstant } from "@/utils/constants"
 import { DEFAULT_LOGIN_REDIRECT } from "@/routes"
 
 const LoginForm = () => {
     const [isPending, startTransition] = useTransition()
     const [error, setError] = useState<string | undefined>()
     const router = useRouter()
+    const searchParams = useSearchParams()
+    const redirectUrl = searchParams.get(callbackUrlConstant) || DEFAULT_LOGIN_REDIRECT
     const form = useForm<z.infer<typeof LoginSchema>>({
         resolver: zodResolver(LoginSchema),
         defaultValues: {
@@ -43,6 +46,8 @@ const LoginForm = () => {
                     if (data?.error) {
                         form.reset()
                         setError(data.error)
+                    } else {
+                        router.push(redirectUrl)
                     }
                 })
                 .catch(() => {

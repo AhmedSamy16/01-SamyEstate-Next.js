@@ -16,3 +16,5 @@ export const navLinksItems: NavLink[] = [
         isHiddenOnSmallDevices: false
     }
 ]
+
+export const callbackUrlConstant = "callbackUrl"

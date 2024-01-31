@@ -1,8 +1,8 @@
-import React from 'react'
+import ProfileWrapper from "@/components/Profile/ProfileWrapper"
 
 const ProfilePage = () => {
     return (
-        <div>ProfilePage</div>
+        <ProfileWrapper />
     )
 }
 

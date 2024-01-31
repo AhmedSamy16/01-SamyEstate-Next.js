@@ -20,9 +20,8 @@ const login = async (values: z.infer<typeof LoginSchema>) => {
     try {
         await signIn("credentials", {
             email,
-            password
+            password,
         })
-        return { success: true }
     } catch (error) {
         if (error instanceof AuthError) {
             switch (error.type) {
