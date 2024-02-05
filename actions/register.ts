@@ -11,7 +11,7 @@ const register = async (values: z.infer<typeof SignUpSchema>) => {
     if (!validatedFields.success) {
         return { error: "Invalid Fields" }
     }
-    const { username, password, email } = validatedFields.data
+    const { name, password, email } = validatedFields.data
     const isUserExist = await getUserByEmail(email)
     if (isUserExist) {
         return { error: "User already Exists" }
@@ -19,7 +19,7 @@ const register = async (values: z.infer<typeof SignUpSchema>) => {
     const hashedPassword = await bcrypt.hash(password, 10)
     await db.user.create({
         data: {
-            name: username,
+            name,
             email,
             password: hashedPassword
         }

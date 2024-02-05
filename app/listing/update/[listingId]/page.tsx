@@ -1,8 +1,8 @@
-import React from 'react'
+import UpdateListingForm from '@/components/UpdateListing/UpdateListingForm'
 
 const UpdateListingPage = () => {
   return (
-    <div>UpdateListing Page</div>
+    <UpdateListingForm />
   )
 }
 

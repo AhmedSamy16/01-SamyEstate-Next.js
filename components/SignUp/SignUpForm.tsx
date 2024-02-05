@@ -31,7 +31,7 @@ const SignUpForm = () => {
         defaultValues: {
             email: "",
             password: "",
-            username: ""
+            name: ""
         }
     })
 
@@ -52,7 +52,7 @@ const SignUpForm = () => {
             <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col gap-5">
                 <FormField
                     control={form.control}
-                    name="username"
+                    name="name"
                     render={({ field }) => (
                         <FormItem>
                             <FormLabel>Name</FormLabel>

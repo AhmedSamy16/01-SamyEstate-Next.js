@@ -1,8 +1,8 @@
-import React from 'react'
+import CreateListingForm from '@/components/CreateListing/CreateListingForm'
 
 const CreateListingPage = () => {
   return (
-    <div>CreateListing Page</div>
+    <CreateListingForm />
   )
 }
 

@@ -1,5 +1,5 @@
 
-export const DEFAULT_LOGIN_REDIRECT = "/profile"
+export const DEFAULT_LOGIN_REDIRECT = "/"
 
 export const protectedRoutes = [
     "/listing/create",
